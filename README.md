@@ -10,7 +10,7 @@ The app runs on your machine end-to-end. No cloud calls are made for lip reading
 ### Features
 - **Dual modes**: switch between lip-to-text and speech-to-text.
 - **Always-on-top preview**: a small camera window stays above other apps.
-- **Readable preview text**: the preview is mirrored correctly so overlays are not reversed.
+
 
 ### Requirements
 - Python 3.12
@@ -25,23 +25,9 @@ The app runs on your machine end-to-end. No cloud calls are made for lip reading
    git clone <your-repo-url>
    cd lip2text
    ```
-2. Download model artifacts:
-   - Visual model: LRS3_V_WER19.1
-   - Language model: lm_en_subword
-
-   Place them like this:
-   ```
-   lip2text/
-   ├── benchmarks/
-       └── LRS3/
-           ├── language_models/
-           │   └── lm_en_subword/
-           └── models/
-               └── LRS3_V_WER19.1/
-   ```
-3. Install and run `ollama`, and pull `llama3.2`.
-4. Install `uv`.
-
+2. Install and run `ollama`, and pull `llama3.2`.
+3. Install `uv`.
+4.
 ### Run
 ```bash
 sudo uv run --with-requirements requirements.txt --python 3.12 main.py config_filename=./configs/LRS3_V_WER19.1.ini detector=mediapipe
@@ -74,6 +60,3 @@ Tips:
 - Local temporary video segments are cleaned up automatically after processing.
 - If a recorded segment is shorter than ~2 seconds, it’s discarded.
 - On systems without TOPMOST window support, the always-on-top hint may be ignored.
-
-### Acknowledgments
-- Visual speech recognition model from the Auto-AVSR project trained on LRS3.
