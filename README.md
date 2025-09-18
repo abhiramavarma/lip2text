@@ -27,7 +27,6 @@ The app runs on your machine end-to-end. No cloud calls are made for lip reading
    ```
 2. Install and run `ollama`, and pull `llama3.2`.
 3. Install `uv`.
-4.
 ### Run
 ```bash
 sudo uv run --with-requirements requirements.txt --python 3.12 main.py config_filename=./configs/LRS3_V_WER19.1.ini detector=mediapipe
