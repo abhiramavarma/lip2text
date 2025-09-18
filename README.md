@@ -22,7 +22,7 @@ The app runs on your machine end-to-end. No cloud calls are made for lip reading
 ### Setup
 1. Clone and enter the repo:
    ```bash
-   git clone <your-repo-url>
+   git clone https://github.com/abhiramavarma/lip2text
    cd lip2text
    ```
 2. Install and run `ollama`, and pull `llama3.2`.
