@@ -11,3 +11,6 @@ torchaudio
 ollama
 pydantic
 keyboard
+openai-whisper
+pyaudio
+numpy>=1.21.0

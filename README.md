@@ -1,41 +1,79 @@
-# Chaplin
+## lip2text
 
-![Chaplin Thumbnail](./thumbnail.png)
+lip2text is a local, privacy-first tool that can transcribe in two ways:
 
-A visual speech recognition (VSR) tool that reads your lips in real-time and types whatever you silently mouth. Runs fully locally.
+- Webcam lip-to-text: reads your lips in real time and types the words you silently mouth.
+- Speech-to-text: captures your microphone audio and transcribes spoken words.
 
-Relies on a [model](https://github.com/mpc001/Visual_Speech_Recognition_for_Multiple_Languages?tab=readme-ov-file#autoavsr-models) trained on the [Lip Reading Sentences 3](https://mmai.io/datasets/lip_reading/) dataset as part of the [Auto-AVSR](https://github.com/mpc001/auto_avsr) project.
+The app runs on your machine end-to-end. No cloud calls are made for lip reading or audio transcription.
 
-Watch a demo of Chaplin [here](https://youtu.be/qlHi0As2alQ).
+### Features
+- **Dual modes**: switch between lip-to-text and speech-to-text.
+- **Always-on-top preview**: a small camera window stays above other apps.
+- **Readable preview text**: the preview is mirrored correctly so overlays are not reversed.
 
-## Setup
+### Requirements
+- Python 3.12
+- GPU optional (CUDA recommended for faster inference)
+- The LRS3 visual model and subword language model files
+- `ollama` with the `llama3.2` model (for optional punctuation/corrections)
+- `uv` for running with the provided `requirements.txt`
 
-1. Clone the repository, and `cd` into it:
+### Setup
+1. Clone and enter the repo:
    ```bash
-   git clone https://github.com/amanvirparhar/chaplin
-   cd chaplin
+   git clone <your-repo-url>
+   cd lip2text
    ```
-2. Download the required model components: [LRS3_V_WER19.1](https://drive.google.com/file/d/1t8RHhzDTTvOQkLQhmK1LZGnXRRXOXGi6/view) and [lm_en_subword](https://drive.google.com/file/d/1g31HGxJnnOwYl17b70ObFQZ1TSnPvRQv/view).
-3. Unzip both folders, and place them in their respective directories:
+2. Download model artifacts:
+   - Visual model: LRS3_V_WER19.1
+   - Language model: lm_en_subword
+
+   Place them like this:
    ```
-   chaplin/
+   lip2text/
    ├── benchmarks/
-       ├── LRS3/
+       └── LRS3/
            ├── language_models/
-               ├── lm_en_subword/
-           ├── models/
-               ├── LRS3_V_WER19.1/
-   ├── ...
+           │   └── lm_en_subword/
+           └── models/
+               └── LRS3_V_WER19.1/
    ```
-4. Install and run `ollama`, and pull the [`llama3.2`](https://ollama.com/library/llama3.2) model.
-5. Install [`uv`](https://github.com/astral-sh/uv).
+3. Install and run `ollama`, and pull `llama3.2`.
+4. Install `uv`.
 
-## Usage
+### Run
+```bash
+sudo uv run --with-requirements requirements.txt --python 3.12 main.py config_filename=./configs/LRS3_V_WER19.1.ini detector=mediapipe
+```
 
-1. Run the following command:
-   ```bash
-   sudo uv run --with-requirements requirements.txt --python 3.12 main.py config_filename=./configs/LRS3_V_WER19.1.ini detector=mediapipe
-   ```
-2. Once the camera feed is displayed, you can start "recording" by pressing the `option` key (Mac) or the `alt` key (Windows/Linux), and start mouthing words.
-3. To stop recording, press the `option` key (Mac) or the `alt` key (Windows/Linux) again. You should see some text being typed out wherever your cursor is.
-4. To exit gracefully, focus on the window displaying the camera feed and press `q`.
+### How to use
+
+By default, the app starts in lip-to-text mode.
+
+- Switch modes: press `Tab` to toggle between lip-to-text (video) and speech-to-text (audio).
+- Start/stop recording: press `Alt` (Windows/Linux) or `Option` (macOS).
+- Quit: focus the preview window and press `q`.
+
+#### Lip-to-Text (webcam)
+1. Ensure your webcam is available.
+2. When the preview appears, press `Alt/Option` to start capturing a short segment.
+3. Mouth your words clearly; when you stop (or switch modes), the segment is processed.
+4. The recognized text is typed into your active cursor location. A correction pass improves punctuation and small errors.
+
+Tips:
+- Face the camera with adequate lighting.
+- Keep your face steady; avoid occluding your lips.
+
+#### Speech-to-Text (microphone)
+1. Press `Tab` to switch to voice mode.
+2. Press `Alt/Option` to start recording. Speak normally.
+3. Press `Alt/Option` again to stop. If the audio is at least ~2 seconds, it’s transcribed and typed at your cursor.
+
+### Notes
+- Local temporary video segments are cleaned up automatically after processing.
+- If a recorded segment is shorter than ~2 seconds, it’s discarded.
+- On systems without TOPMOST window support, the always-on-top hint may be ignored.
+
+### Acknowledgments
+- Visual speech recognition model from the Auto-AVSR project trained on LRS3.
